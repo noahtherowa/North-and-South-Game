@@ -1364,10 +1364,6 @@ function drawStartScreen() {
   pop();
   textStyle(NORMAL);
 
-  fill(220, 180, 255);
-  textSize(15);
-  text('THE SEVERED SOULS: ASCENSION', width / 2, 370);
-
   stroke(120, 100, 180, 120);
   strokeWeight(1);
   line(220, 400, 580, 400);
