@@ -76,7 +76,7 @@ A cooperative 2-player platformer for the WED Game Jam (Theme: "Better Together"
 ## 🎨 Credits
 - Audio from AudioContext Webkit
 - Help from ClaudeAI
-**Created for WED Game Jam**  
+- **Created for WED Game Jam**  
 Theme: Better Together  
 Cooperative gravity-flipped platformer exploring what it means to work together despite opposing forces.
 
