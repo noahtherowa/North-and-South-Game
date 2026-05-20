@@ -122,7 +122,7 @@ function setup() {
   // Mount the canvas into the `<div id="game-canvas">` inside our page so
   // it sits cleanly inside the styled game-frame rather than being appended
   // to the bottom of <body>.
- // c.parent('game-canvas'); FOR SOME REASON CAUSING ERROR f
+ c.parent('game-canvas'); 
   noStroke();
   textAlign(CENTER, CENTER);
   frameRate(60);
