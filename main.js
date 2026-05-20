@@ -1,5 +1,5 @@
 // ==========================================================
-//  NORTH & SOUTH — THE SEVERED SOULS: ASCENSION
+//  NORTH & SOUTH
 //  A cooperative gravity-flipped platformer
 // ==========================================================
 
@@ -122,7 +122,7 @@ function setup() {
   // Mount the canvas into the `<div id="game-canvas">` inside our page so
   // it sits cleanly inside the styled game-frame rather than being appended
   // to the bottom of <body>.
-  c.parent('game-canvas');
+ // c.parent('game-canvas'); FOR SOME REASON CAUSING ERROR f
   noStroke();
   textAlign(CENTER, CENTER);
   frameRate(60);
@@ -1341,7 +1341,7 @@ function drawStartScreen() {
 
   fill(180, 180, 220);
   textSize(13);
-  text('WED GAME JAM  •  THEME: BETTER TOGETHER', width / 2, 130);
+  text('WED GAME JAM  • BETTER TOGETHER', width / 2, 130);
 
   push();
   translate(width / 2, 220 + bob);
@@ -1388,7 +1388,7 @@ function drawStartScreen() {
   fill(255, 220, 80);
   text('Collect ★ stars for score and brief invincibility.', width / 2, 543);
   fill(220, 230, 255);
-  text('Reach the EQUATOR together to ascend.', width / 2, 561);
+  text('Reach the EQUATOR together to get to next level.', width / 2, 561);
   fill(180, 255, 180);
   text('In the boss fight, STAY CLOSE to deal damage.', width / 2, 579);
 
@@ -1443,12 +1443,12 @@ function drawGameOverScreen() {
   fill(255, 50, 50, pulse);
   textSize(56);
   textStyle(BOLD);
-  text('YOU DIED', width / 2, height / 2 - 50);
+  text('GAME OVER', width / 2, height / 2 - 50);
   textStyle(NORMAL);
 
   fill(220);
   textSize(16);
-  text('Both souls have fallen into the void...', width / 2, height / 2 + 10);
+  text(':(', width / 2, height / 2 + 10);
 
   fill(255, 220, 80);
   textSize(15);
