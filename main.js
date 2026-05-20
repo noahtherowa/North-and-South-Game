@@ -47,7 +47,13 @@ let audioCtx = null;
 let masterGain = null;
 
 function setupAudio() {
-  if (audioCtx) return;
+  // Modern browsers suspend any AudioContext created before a user gesture.
+  // If we already have a context, resume it now (we're being called from a
+  // user-gesture handler) so audio actually plays.
+  if (audioCtx) {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return;
+  }
   try {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     masterGain = audioCtx.createGain();
@@ -113,7 +119,10 @@ function updateMusic() {
 // ---- SETUP ----
 function setup() {
   const c = createCanvas(800, 800);
-  c.parent(document.body);
+  // Mount the canvas into the `<div id="game-canvas">` inside our page so
+  // it sits cleanly inside the styled game-frame rather than being appended
+  // to the bottom of <body>.
+  c.parent('game-canvas');
   noStroke();
   textAlign(CENTER, CENTER);
   frameRate(60);
@@ -400,8 +409,8 @@ function initBoss() {
     x: width / 2,
     y: height / 2,
     size: 64,
-    hp: 220,
-    maxHp: 220,
+    hp: 150,        // was 220 — easier final fight
+    maxHp: 150,
     phase: 1,
     color: color(170, 30, 240),
     vx: 0, vy: 0,
@@ -688,18 +697,25 @@ function updateBoss() {
   if (boss.hitFlash > 0) boss.hitFlash--;
   if (boss.telegraphTimer > 0) boss.telegraphTimer--;
 
-  if (boss.hp < boss.maxHp / 2 && boss.phase === 1) {
+  if (boss.hp < boss.maxHp * 0.35 && boss.phase === 1) {
+    // Enrage at 35% HP instead of 50% — gives players more time in the
+    // easier first phase before things heat up.
     boss.phase = 2;
     boss.color = color(255, 60, 60);
-    boss.size = 76;
+    boss.size = 70;   // was 76 — smaller hitbox so unfair touches are rarer
     shakeMag = 18;
     flash(255, 100, 100, 120);
     sCharge();
     spawnParticles(boss.x, boss.y, 40, color(255, 100, 50));
     hitStop = 12;
+    // Brief grace-frame invincibility so the boss "growing" into a player
+    // who's already touching doesn't cause an instant unfair death.
+    p1.invincible = max(p1.invincible, 35);
+    p2.invincible = max(p2.invincible, 35);
   }
 
-  let speed = boss.phase === 1 ? 1.7 : 2.8;
+  // Slower boss so players can position and chase. (was 1.7 / 2.8)
+  let speed = boss.phase === 1 ? 1.3 : 2.1;
   let cx1 = p1.x + p1.size / 2, cy1 = p1.y + p1.size / 2;
   let cx2 = p2.x + p2.size / 2, cy2 = p2.y + p2.size / 2;
   let d1 = dist(boss.x, boss.y, cx1, cy1);
@@ -713,22 +729,22 @@ function updateBoss() {
   boss.x = constrain(boss.x, 60, width - 60);
   boss.y = constrain(boss.y, 130, height - 130);
 
-  // Telegraph attack 60 frames before firing
-  let attackInterval = 100;
-  let telegraphPoint = attackInterval - 60;
+  // Telegraph attack 90 frames before firing (was 60) — more warning.
+  let attackInterval = 140;             // was 100 — slower attack cadence
+  let telegraphPoint = attackInterval - 90;
   if (boss.phase === 2 && boss.attackTimer % attackInterval === telegraphPoint) {
-    boss.telegraphTimer = 60;
+    boss.telegraphTimer = 90;
     sTelegraph();
   }
 
   if (boss.phase === 2 && boss.attackTimer % attackInterval === 0 && boss.attackTimer > 0) {
-    let count = 7;
+    let count = 5;                      // was 7 — fewer projectiles per volley
     let baseAng = random(TWO_PI);
     for (let i = 0; i < count; i++) {
       let a = baseAng + (TWO_PI / count) * i;
       boss.projectiles.push({
         x: boss.x, y: boss.y,
-        vx: cos(a) * 3.6, vy: sin(a) * 3.6,
+        vx: cos(a) * 2.7, vy: sin(a) * 2.7,   // was 3.6 — slower, easier to dodge
         life: 200
       });
     }
@@ -752,7 +768,7 @@ function updateBoss() {
   }
 
   let pd = dist(cx1, cy1, cx2, cy2);
-  let powered = pd < 130;
+  let powered = pd < 170;              // was 130 — more forgiving "stay close" radius
 
   let touching =
     dist(boss.x, boss.y, cx1, cy1) < boss.size / 2 + p1.size / 2 ||
@@ -760,7 +776,9 @@ function updateBoss() {
 
   if (touching) {
     if (powered) {
-      let dmg = boss.phase === 1 ? 1.2 : 0.8;
+      // Higher per-hit damage so the fight ends in fewer touches.
+      // (was 1.2 / 0.8)
+      let dmg = boss.phase === 1 ? 1.8 : 1.3;
       boss.hp -= dmg;
       boss.hitFlash = 6;
       boss.x += random(-4, 4);
@@ -1019,10 +1037,13 @@ function drawAuras() {
   let cx2 = p2.x + p2.size / 2, cy2 = p2.y + p2.size / 2;
   let d = dist(cx1, cy1, cx2, cy2);
 
-  if (d < 130) {
-    let alpha = map(d, 0, 130, 180, 30);
+  // Visual "bond" beam between players — kept in sync with the
+  // boss-fight `powered` radius (170) so you can see when you're close
+  // enough to deal damage.
+  if (d < 170) {
+    let alpha = map(d, 0, 170, 180, 30);
     fill(255, 255, 255, alpha);
-    let mr = map(d, 0, 130, 90, 220) + sin(frameCounter * 0.1) * 8;
+    let mr = map(d, 0, 170, 90, 220) + sin(frameCounter * 0.1) * 8;
     ellipse((cx1 + cx2) / 2, (cy1 + cy2) / 2, mr);
     stroke(255, 255, 255, alpha);
     strokeWeight(2);

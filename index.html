@@ -1,230 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>North and South</title>
+    <title>North &amp; South — Two Souls, One World</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
+
+    <!--
+      The game is loaded as a real p5.js sketch directly on this page
+      (no iframe, no external editor). Loading order matters:
+        1. p5.js library  — defines `createCanvas`, `draw`, etc.
+        2. main.js        — our sketch code that uses those functions.
+      Both scripts use `defer` so they wait until the HTML is parsed and
+      then run in document order. By the time `setup()` fires, the
+      `<div id="game-canvas">` below exists for the canvas to attach to.
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.1/lib/p5.min.js" defer></script>
+    <script src="main.js" defer></script>
 </head>
 
 <body>
-    <div class="background-effect"></div>
-    
-    <header class="header">
-        <div class="title-container">
-            <h1 class="main-title">
-                <span class="North">NORTH AND SOUTH</span>
-            </h1>
-            <p class="tagline">Two Souls. One World. One Destiny.</p>
+    <!-- ============================================================
+         MASTHEAD — split title that mirrors the game's two-souls theme.
+         ============================================================ -->
+    <header class="masthead">
+        <div class="masthead-grid">
+            <div class="half half-north">
+                <span class="half-label">North</span>
+                <span class="half-word">NORTH</span>
+            </div>
+            <div class="masthead-join">
+                <span class="join-line"></span>
+                <span class="join-and">AND</span>
+                <span class="join-line"></span>
+            </div>
+            <div class="half half-south">
+                <span class="half-word">SOUTH</span>
+                <span class="half-label">South</span>
+            </div>
         </div>
-        <p class="theme-badge">🎮 WED Game Jam Theme: Better Together</p>
+        <p class="tagline">Two souls. One world. One destiny.</p>
+        <p class="theme-badge">WED Game Jam &middot; Theme: <strong>Better Together</strong></p>
     </header>
 
     <main class="container">
+
+        <!-- ====================== PROPHECY ======================= -->
         <section class="story-section">
-            <h2>⚡ The Prophecy</h2>
+            <h2 class="section-heading"><span class="num">I</span>The Prophecy</h2>
+
             <div class="story-content">
-                <div class="north-side">
-                    <h3>🔵 The Blue Soul - South</h3>
-                    <p>Cast to the frozen north by dark forces, yearning to rise...</p>
-                </div>
-                <div class="dividing-line">EQUATOR</div>
-                <div class="south-side">
-                    <h3>🔴 The Red Soul - North</h3>
-                    <p>Trapped in the burning south, desperate to ascend...</p>
-                </div>
-            </div>
-            <p class="plot-text">Separated by an ancient demon king's curse, two souls must battle through treacherous platforming challenges, evade mystical green forces, and navigate deadly lava hazards. Only by reuniting at the Equator can they gain the power to face the ultimate evil.</p>
-        </section>
-            
-            <h2>▶ Enter the Arena</h2>
-            <div class="embed-container">
-                <iframe src="https://editor.p5js.org/ashrith.meda/full/oJfPNGTVK" width="1000" height="1000"></iframe>
-            <div class="controls">
-                <div class="player-controls red-player">
-                    <h4>🔴 RED SOUL (South)</h4>
-                    <p><kbd>A</kbd> <kbd>D</kbd> Move | <kbd>W</kbd> Jump</p>
-                </div>
-                <div class="player-controls blue-player">
-                    <h4>🔵 BLUE SOUL (North)</h4>
-                    <p><kbd>←</kbd> <kbd>→</kbd> Move | <kbd>↑</kbd> Jump</p>
-                </div>
-            </div>
-        </section>
+                <article class="soul soul-blue">
+                    <div class="soul-tag">Blue Soul</div>
+                    <h3>The North</h3>
+                    <p>Cast to the frozen north by dark forces, yearning to rise…</p>
+                </article>
 
-        <section class="about-section">
-            <h2>🎮 About the Game</h2>
-            <p class="description">North and South is a cooperative 2D platformer where two players must work together to overcome impossible odds. Navigate through 3 progressively challenging levels filled with enemies and hazards, then face the Demon King himself in an epic final battle.</p>
-            
-            <div class="features">
-                <div class="feature-item">
-                    <div class="feature-icon">📊</div>
-                    <div class="feature-title">Three Challenging Levels</div>
-                    <p>Progress from platforming basics to near-impossible feats</p>
+                <div class="equator">
+                    <span class="equator-tick"></span>
+                    <span class="equator-word">Equator</span>
+                    <span class="equator-tick"></span>
                 </div>
-                <div class="feature-item">
-                    <div class="feature-icon">👹</div>
-                    <div class="feature-title">Mystical Enemies</div>
-                    <p>Avoid glowing green monsters roaming the danger zone</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🔥</div>
-                    <div class="feature-title">Deadly Hazards</div>
-                    <p>Navigate treacherous lava blocks and environmental traps</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">👑</div>
-                    <div class="feature-title">Epic Boss Battle</div>
-                    <p>Defeat the Demon King and free Earth from eternal separation</p>
-                </div>
+
+                <article class="soul soul-red">
+                    <div class="soul-tag">Red Soul</div>
+                    <h3>The South</h3>
+                    <p>Trapped in the burning south, desperate to ascend…</p>
+                </article>
             </div>
+
+            <p class="plot-text">
+                Separated by an ancient demon king's curse, two souls must battle
+                through treacherous platforming challenges, evade mystical green
+                forces, and navigate deadly lava hazards. Only by reuniting at the
+                Equator can they gain the power to face the ultimate evil.
+            </p>
         </section>
 
-        <section class="mechanics-section">
-            <h2>⚙ Core Mechanics</h2>
-            <div class="mechanics-grid">
-                <div class="mechanic">
-                    <h3>🤝 Proximity Power</h3>
-                    <p>Stay close to your partner to unlock special abilities and gain power for the final confrontation.</p>
-                </div>
-                <div class="mechanic">
-                    <h3>🎯 Meet at the Equator</h3>
-                    <p>Each level requires both souls to reach the glowing golden Equator simultaneously to progress.</p>
-                </div>
-                <div class="mechanic">
-                    <h3>🌑 Inverted Gravity</h3>
-                    <p>One soul falls upward, one falls downward - cooperation is essential for survival.</p>
-                </div>
-                <div class="mechanic">
-                    <h3>🏆 Victory Condition</h3>
-                    <p>Reach the final boss and defeat it together. Only unity can overcome darkness.</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <p>Made with ❤️ for the WED Game Jam | Theme: Better Together</p>
-        <p class="victory-text">"Earth is Freed"</p>
-    </footer>
-</body>
-
-</html>
-=======
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>North and South</title>
-    <link href="style.css" rel="stylesheet" type="text/css" />
-</head>
-
-<body>
-    <div class="background-effect"></div>
-
-    <header class="header">
-        <div class="title-container">
-            <h1 class="main-title">
-                <span class="North">NORTH AND SOUTH</span>
-            </h1>
-            <p class="tagline">Two Souls. One World. One Destiny.</p>
-        </div>
-        <p class="theme-badge">🎮 WED Game Jam Theme: Better Together</p>
-    </header>
-
-    <main class="container">
-        <section class="story-section">
-            <h2>⚡ The Prophecy</h2>
-            <div class="story-content">
-                <div class="north-side">
-                    <h3>🔵 The Blue Soul - South</h3>
-                    <p>Cast to the frozen north by dark forces, yearning to rise...</p>
-                </div>
-                <div class="dividing-line">EQUATOR</div>
-                <div class="south-side">
-                    <h3>🔴 The Red Soul - North</h3>
-                    <p>Trapped in the burning south, desperate to ascend...</p>
-                </div>
-            </div>
-            <p class="plot-text">Separated by an ancient demon king's curse, two souls must battle through treacherous platforming challenges, evade mystical green forces, and navigate deadly lava hazards. Only by reuniting at the Equator can they gain the power to face the ultimate evil.</p>
-        </section>
-
+        <!-- ====================== ARENA ==========================
+             The actual game lives inside `<div id="game-canvas">`.
+             p5.js mounts the 800×800 canvas there at startup. CSS
+             scales it to fit the square `.game-frame` container.
+             ======================================================= -->
         <section class="arena-section">
-            <h2>▶ Enter the Arena</h2>
+            <h2 class="section-heading"><span class="num">II</span>Enter the Arena</h2>
+
             <div class="embed-container">
-              <iframe src="https://editor.p5js.org/ashrith.meda/full/oJfPNGTVK" width="1000" height="1000"></iframe>
-              <div class="game-action">
-                  <a class="game-link" href="https://editor.p5js.org/ashrith.meda/full/oJfPNGTVK" target="_blank" rel="noopener noreferrer">Play on p5.js</a>
-              </div>
-            <div class="controls">
-                <div class="player-controls red-player">
-                    <h4>🔴 RED SOUL (South)</h4>
-                    <p><kbd>A</kbd> <kbd>D</kbd> Move | <kbd>W</kbd> Jump</p>
+                <div class="game-frame">
+                    <div id="game-canvas" tabindex="0" aria-label="North and South game canvas"></div>
                 </div>
-                <div class="player-controls blue-player">
-                    <h4>🔵 BLUE SOUL (North)</h4>
-                    <p><kbd>←</kbd> <kbd>→</kbd> Move | <kbd>↑</kbd> Jump</p>
+
+                <p class="game-hint">
+                    Click the game once, then use the keys below. Press <kbd>Space</kbd> on the
+                    title screen to begin.
+                </p>
+
+                <div class="controls">
+                    <div class="player-controls red-player">
+                        <h4>Red Soul · South</h4>
+                        <p><kbd>A</kbd> <kbd>D</kbd> move &nbsp;·&nbsp; <kbd>W</kbd> jump</p>
+                    </div>
+                    <div class="player-controls blue-player">
+                        <h4>Blue Soul · North</h4>
+                        <p><kbd>&larr;</kbd> <kbd>&rarr;</kbd> move &nbsp;·&nbsp; <kbd>&uarr;</kbd> jump</p>
+                    </div>
                 </div>
-            </div>
+
+                <p class="game-meta">
+                    <kbd>P</kbd> pause &nbsp;·&nbsp; <kbd>M</kbd> mute &nbsp;·&nbsp;
+                    <kbd>R</kbd> restart after death/win
+                </p>
             </div>
         </section>
 
+        <!-- ====================== ABOUT ========================== -->
         <section class="about-section">
-            <h2>🎮 About the Game</h2>
-            <p class="description">North and South is a cooperative 2D platformer where two players must work together to overcome impossible odds. Navigate through 3 progressively challenging levels filled with enemies and hazards, then face the Demon King himself in an epic final battle.</p>
+            <h2 class="section-heading"><span class="num">III</span>About the Game</h2>
+            <p class="description">
+                North and South is a cooperative 2D platformer where two players must
+                work together to overcome impossible odds. Navigate through three
+                progressively challenging levels filled with enemies and hazards,
+                then face the Demon King himself in an epic final battle.
+            </p>
 
             <div class="features">
                 <div class="feature-item">
-                    <div class="feature-icon">📊</div>
+                    <div class="feature-num">01</div>
                     <div class="feature-title">Three Challenging Levels</div>
-                    <p>Progress from platforming basics to near-impossible feats</p>
+                    <p>Progress from platforming basics to near-impossible feats.</p>
                 </div>
                 <div class="feature-item">
-                    <div class="feature-icon">👹</div>
+                    <div class="feature-num">02</div>
                     <div class="feature-title">Mystical Enemies</div>
-                    <p>Avoid glowing green monsters roaming the danger zone</p>
+                    <p>Avoid glowing green monsters roaming the danger zone.</p>
                 </div>
                 <div class="feature-item">
-                    <div class="feature-icon">🔥</div>
+                    <div class="feature-num">03</div>
                     <div class="feature-title">Deadly Hazards</div>
-                    <p>Navigate treacherous lava blocks and environmental traps</p>
+                    <p>Navigate treacherous lava blocks and environmental traps.</p>
                 </div>
                 <div class="feature-item">
-                    <div class="feature-icon">👑</div>
+                    <div class="feature-num">04</div>
                     <div class="feature-title">Epic Boss Battle</div>
-                    <p>Defeat the Demon King and free Earth from eternal separation</p>
+                    <p>Defeat the Demon King and free Earth from eternal separation.</p>
                 </div>
             </div>
         </section>
 
+        <!-- ====================== MECHANICS ====================== -->
         <section class="mechanics-section">
-            <h2>⚙ Core Mechanics</h2>
+            <h2 class="section-heading"><span class="num">IV</span>Core Mechanics</h2>
             <div class="mechanics-grid">
                 <div class="mechanic">
-                    <h3>🤝 Proximity Power</h3>
-                    <p>Stay close to your partner to unlock special abilities and gain power for the final confrontation.</p>
+                    <h3>Proximity Power</h3>
+                    <p>Stay close to your partner to unlock special abilities and
+                       gain power for the final confrontation.</p>
                 </div>
                 <div class="mechanic">
-                    <h3>🎯 Meet at the Equator</h3>
-                    <p>Each level requires both souls to reach the glowing golden Equator simultaneously to progress.</p>
+                    <h3>Meet at the Equator</h3>
+                    <p>Each level requires both souls to reach the glowing golden
+                       Equator simultaneously to progress.</p>
                 </div>
                 <div class="mechanic">
-                    <h3>🌑 Inverted Gravity</h3>
-                    <p>One soul falls upward, one falls downward - cooperation is essential for survival.</p>
+                    <h3>Inverted Gravity</h3>
+                    <p>One soul falls upward, one falls downward — cooperation is
+                       essential for survival.</p>
                 </div>
                 <div class="mechanic">
-                    <h3>🏆 Victory Condition</h3>
-                    <p>Reach the final boss and defeat it together. Only unity can overcome darkness.</p>
+                    <h3>Victory Condition</h3>
+                    <p>Reach the final boss and defeat it together. Only unity can
+                       overcome darkness.</p>
                 </div>
             </div>
         </section>
     </main>
 
     <footer class="footer">
-        <p>Made with ❤️ for the WED Game Jam | Theme: Better Together</p>
-        <p class="victory-text">"Earth is Freed"</p>
+        <p>Made for the WED Game Jam &nbsp;·&nbsp; Theme: Better Together</p>
+        <p class="victory-text">"Earth is Freed."</p>
     </footer>
 </body>
+</html>
